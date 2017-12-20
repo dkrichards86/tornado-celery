@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div id="message"></div>
+{% for i in [1, 2] %}
+<select id="digit-{{i}}">
+  <option disabled selected value> -- select a number -- </option>
+  {% for j in range(1, 11) %}
+      <option value="{{ j }}">{{ j }}</option>
+  {% end %}
+</select>
+{% end %}
+<button id='btn-run' onclick="run()">Start</button>
+{% end %}

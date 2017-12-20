@@ -1,0 +1,29 @@
+version: '2'
+
+services:
+  redis:
+    container_name: tornado_celery_redis
+    image: redis:3.0
+    ports:
+      - 6379:6379
+
+  web:
+    build: .
+    image: tornado_celery_image
+    container_name: tornado_celery_tornado
+    ports:
+       - 8888:8888
+    command: python runner.py -H 0.0.0.0 -P 8888
+    volumes:
+      - ./:/code/
+    depends_on:
+      - redis
+
+  worker:
+    image: tornado_celery_image
+    container_name: tornado_celery_worker
+    command: celery -A tasks.tasks worker -l info -n default@%h
+    volumes:
+      - ./:/code/
+    depends_on:
+      - redis
